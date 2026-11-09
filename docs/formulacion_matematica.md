@@ -44,7 +44,17 @@ $$
 M = \big((M_0 \ominus B) \oplus B\big) \bullet B,
 $$
 
-es decir, una apertura (quita ruido pequeño) seguida de un cierre (rellena huecos como el pedúnculo o los brillos). Finalmente se conserva el contorno conexo de mayor área y se rellena su interior. En las imágenes de `mixed_quality` (varias frutas por foto) se conservan todos los componentes conexos con área mayor a un umbral relativo $A_{\min} = \alpha\,HW$, y cada uno se recorta por su caja envolvente.
+es decir, una apertura (quita ruido pequeño) seguida de un cierre (rellena huecos como el pedúnculo o los brillos). Finalmente se conserva el contorno conexo de mayor área y se rellena su interior.
+
+**Refinamiento con GrabCut.** El EDA mostró que muchas fotos del dataset tienen fondos con textura (pasto, telas, baldosas), donde un solo umbral no basta. Por eso la máscara de Otsu se usa como semilla de GrabCut [6]: los píxeles con $\Delta E$ y saturación por encima de sus umbrales de Otsu se marcan como "probable fruta", la franja del borde como "fondo seguro", y se minimiza la energía
+
+$$
+E(\boldsymbol{\alpha}) = \sum_{p} -\log p\big(z_p \mid \alpha_p\big) + \lambda \sum_{(p,q)\in\mathcal{N}} [\alpha_p \ne \alpha_q]\, e^{-\beta \lVert z_p - z_q\rVert^2},
+$$
+
+donde $\alpha_p \in \{0,1\}$ es la etiqueta del píxel $p$, $p(z_p\mid\alpha_p)$ es la verosimilitud del color bajo una mezcla de gaussianas de fruta o de fondo, y el segundo término penaliza cortar entre píxeles vecinos de color parecido. La minimización se hace con un corte mínimo de grafo, alternando con la reestimación de las mezclas.
+
+**Separación de frutas en `mixed_quality`.** Sobre la máscara se calcula la transformada de distancia $D(p) = \min_{q \notin M} \lVert p - q \rVert$. El centro de cada fruta aproximadamente redonda es un máximo local de $D$; esos máximos son los marcadores del algoritmo watershed aplicado a $-D$, que ubica la frontera entre dos frutas en contacto en el "cuello" donde $D$ es mínima. Se descartan regiones con radio inscrito $r_{in} = \max_{p\in R} D(p)$ pequeño o con compacidad $r_{in} / \sqrt{A/\pi} < 0{,}35$ (franjas del fondo), y cada región restante se recorta por su caja envolvente.
 
 ## 3. Estimación de tamaño
 
@@ -71,7 +81,7 @@ q(\hat{d}) =
 \end{cases}
 $$
 
-Con las fotos propias, tomadas a una distancia fija de unos 30 cm, existe un factor de escala aproximadamente constante $k$ (cm por píxel), y se espera $d_{cm} \approx k\, d_{px}$. Ese factor se estima por mínimos cuadrados con el diámetro medido con regla, $\hat{k} = \sum_i d_{px,i}\,d_{cm,i} / \sum_i d_{px,i}^2$, y el error del estimador se reporta como MAE y error relativo.
+Con las fotos propias, tomadas a una distancia fija de unos 30 cm, existe un factor de escala aproximadamente constante $k$ (cm por píxel), y se espera $d_{cm} \approx k\, d_{px}$. Ese factor se estima por mínimos cuadrados con el diámetro medido con regla, $\hat{k} = \sum_i d_{px,i}\,d_{cm,i} / \sum_i d_{px,i}^2$ (el valor que minimiza $\sum_i (d_{cm,i} - k\,d_{px,i})^2$), y el error del estimador se reporta como MAE y error relativo. Para el banano, que es alargado, el diámetro equivalente no es su largo; por eso $k$ se ajusta por fruta y para el banano se compara contra el largo medido.
 
 **Limitación conocida:** en el dataset de Kaggle no se conoce la distancia de la cámara, así que $\hat{d}$ mide el tamaño *relativo dentro de la foto*, no el tamaño físico. Esto se discute en el informe.
 
@@ -167,3 +177,5 @@ donde $n_k$ es el número de ejemplos de la clase $k$; así las clases minoritar
 [4] L. Breiman, "Random forests," *Machine Learning*, vol. 45, no. 1, pp. 5–32, 2001.
 
 [5] Y. LeCun, L. Bottou, Y. Bengio, and P. Haffner, "Gradient-based learning applied to document recognition," *Proc. IEEE*, vol. 86, no. 11, pp. 2278–2324, 1998.
+
+[6] C. Rother, V. Kolmogorov, and A. Blake, "'GrabCut': Interactive foreground extraction using iterated graph cuts," *ACM Trans. Graph.*, vol. 23, no. 3, pp. 309–314, 2004.
