@@ -82,3 +82,32 @@ def test_aplicar_y_recortar():
     assert solo[5, 5].sum() == 0
     rec, mrec = recortar_fruta(img, m)
     assert rec.shape[0] < img.shape[0] and mrec.shape == rec.shape[:2]
+
+
+@pytest.mark.parametrize("metodo", ["otsu", "grabcut"])
+def test_ambos_metodos_con_fondo_uniforme(metodo):
+    img = imagen_sintetica([(300, 200)], radio=90)
+    real = np.zeros(img.shape[:2], np.uint8)
+    cv2.circle(real, (300, 200), 90, 255, -1)
+    assert iou(mascara_fruta(img, metodo), real) > 0.93
+
+
+def test_grabcut_con_fondo_texturizado():
+    # Fondo gris con baldosas y manchas (poco saturado) y fruta naranja saturada
+    rng = np.random.default_rng(0)
+    img = np.full((400, 600, 3), 150, np.uint8)
+    for x in range(0, 600, 60):
+        cv2.line(img, (x, 0), (x, 400), (90, 90, 90), 3)
+    for _ in range(300):
+        c = tuple(int(v) for v in rng.integers(0, [600, 400]))
+        g = int(rng.integers(60, 230))
+        cv2.circle(img, c, int(rng.integers(2, 8)), (g, g, g), -1)
+    cv2.circle(img, (300, 200), 90, (30, 140, 240), -1)
+    real = np.zeros(img.shape[:2], np.uint8)
+    cv2.circle(real, (300, 200), 90, 255, -1)
+    assert iou(mascara_fruta(img, "grabcut"), real) > 0.9
+
+
+def test_metodo_invalido():
+    with pytest.raises(ValueError):
+        mascara_fruta(imagen_sintetica([(300, 200)]), "kmeans")
