@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Credenciales y entorno
+.env
+kaggle.json
+*.key
+
+# Datos pesados (se regeneran con los scripts de src/data)
+data/raw/kaggle/*
+!data/raw/kaggle/.gitkeep
+data/interim/*
+!data/interim/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+!data/processed/*.csv
+
+# Fotos propias sin reducir (solo se versionan las de data/propias/raw)
+data/propias/originales/
+
+# Modelos entrenados (solo se versiona el final si pesa < 50 MB)
+experiments/checkpoints/*
+!experiments/checkpoints/.gitkeep
+experiments/logs/
+
+# Word abierto
+~$*.docx
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

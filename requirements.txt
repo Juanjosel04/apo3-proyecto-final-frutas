@@ -1,0 +1,19 @@
+# Probado con Python 3.12 en Windows 11
+numpy>=1.26,<2.2
+pandas>=2.2
+matplotlib>=3.8
+seaborn>=0.13
+opencv-python>=4.9
+scikit-image>=0.22
+scikit-learn>=1.4
+tensorflow>=2.16,<2.21
+joblib>=1.3
+Pillow>=10.2
+kagglehub>=0.3
+streamlit>=1.35
+
+# Notebooks y pruebas
+jupyter>=1.0
+ipykernel>=6.29
+nbconvert>=7.16
+pytest>=8.0
