@@ -26,5 +26,17 @@ SEMILLA = 42
 # Tamaño de entrada de la CNN
 TAM_IMAGEN = (128, 128)
 
+# Frutas del dataset (nombres en español usados en carpetas y etiquetas)
+FRUTAS = ["manzana", "banano", "guayaba", "lima", "naranja", "granada"]
+
+# Clases de calidad del proyecto
+CALIDADES = ["buena", "regular", "mala"]
+
+# Etiquetas de las fotos propias
+TAMANOS = ["pequeno", "mediano", "grande"]
+LUGARES = ["casa", "supermercado", "plaza"]
+COLUMNAS_ETIQUETAS = ["archivo", "fruta", "calidad", "diametro_cm", "tamano",
+                      "autor", "fecha", "lugar", "notas"]
+
 # Extensiones de imagen aceptadas
 EXTENSIONES = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
