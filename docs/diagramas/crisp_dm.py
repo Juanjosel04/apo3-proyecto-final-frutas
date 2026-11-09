@@ -23,13 +23,13 @@ FASES = [
     ]),
     ("2. Comprensión de los datos", "#dff0e0", [
         "EDA del dataset de Kaggle: frutas y clases",
-        "Desbalance, resolución, brillo, fondos",
+        "Hallazgo: fondo y resolución distintos por clase",
         "mixed_quality: varias frutas por foto",
         "Elección de frutas y definición de clases",
     ]),
     ("3. Preparación de los datos", "#fdf0d5", [
-        "Segmentación: ΔE en Lab + Otsu + morfología",
-        "Recorte de cada fruta (watershed si se tocan)",
+        "Segmentación: Otsu (ΔE y saturación) + GrabCut",
+        "mixed: watershed (transformada de distancia)",
         "Tamaño: d = 2·√(A/π), normalizado",
         "Características de color, textura y forma",
     ]),
