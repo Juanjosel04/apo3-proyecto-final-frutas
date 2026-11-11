@@ -3,7 +3,8 @@
 Uso (desde la raíz del repo):
     python -m src.training.entrenar clasicos   # LogReg, SVM y RF con GridSearchCV
     python -m src.training.entrenar sesgo      # cuánto predicen la calidad las condiciones de captura
-    python -m src.training.entrenar cnn        # CNN desde cero (Keras)
+    python -m src.training.entrenar cnn --variante base    # CNN desde cero (Keras)
+    python -m src.training.entrenar cnn --variante doble
 
 Protocolo común:
 - Partición fija 70/15/15 de ``src.data.recortes`` (estratificada por fruta y calidad).
@@ -216,6 +217,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("que", choices=["clasicos", "sesgo", "cnn"])
     parser.add_argument("--epocas", type=int, default=60)
+    parser.add_argument("--variante", default="doble", help="variante de la CNN: base o doble")
     args = parser.parse_args()
     if args.que == "clasicos":
         print(entrenar_clasicos())
@@ -224,7 +226,7 @@ def main() -> None:
         sesgo_captura()
     else:
         from src.models.cnn import entrenar_cnn
-        entrenar_cnn(epocas=args.epocas)
+        entrenar_cnn(epocas=args.epocas, variante=args.variante)
 
 
 if __name__ == "__main__":
