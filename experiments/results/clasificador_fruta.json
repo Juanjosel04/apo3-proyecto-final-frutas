@@ -1,0 +1,14 @@
+{
+  "n": 966,
+  "exactitud": 0.9679,
+  "precision_macro": 0.9688,
+  "recall_macro": 0.9686,
+  "f1_macro": 0.9681,
+  "f1_manzana": 0.9545,
+  "recall_manzana": 0.924,
+  "f1_banano": 0.979,
+  "recall_banano": 0.9929,
+  "f1_naranja": 0.971,
+  "recall_naranja": 0.9887,
+  "cv_f1": 0.9704
+}

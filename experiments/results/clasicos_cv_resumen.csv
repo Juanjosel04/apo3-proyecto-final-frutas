@@ -1,0 +1,16 @@
+configuracion,modelo,fruta,mejores_parametros,cv_f1,cv_f1_std,train_f1
+global,logreg,todas,"{""C"": 100}",0.9108,0.0063,0.9162
+global,svm,todas,"{""C"": 10, ""gamma"": ""scale""}",0.9815,0.0059,0.9981
+global,rf,todas,"{""max_depth"": null, ""max_features"": ""sqrt"", ""min_samples_leaf"": 1, ""n_estimators"": 500}",0.9664,0.0033,1.0
+global_fruta,logreg,todas,"{""C"": 10}",0.9131,0.0063,0.9178
+global_fruta,svm,todas,"{""C"": 10, ""gamma"": ""scale""}",0.9824,0.0067,0.9982
+global_fruta,rf,todas,"{""max_depth"": null, ""max_features"": ""sqrt"", ""min_samples_leaf"": 1, ""n_estimators"": 500}",0.968,0.0035,1.0
+por_fruta,logreg,manzana,"{""C"": 10}",0.9277,0.0095,0.9488
+por_fruta,logreg,banano,"{""C"": 1}",0.9899,0.004,0.9979
+por_fruta,logreg,naranja,"{""C"": 1}",0.9496,0.0076,0.9621
+por_fruta,svm,manzana,"{""C"": 10, ""gamma"": ""scale""}",0.9777,0.0074,0.9999
+por_fruta,svm,banano,"{""C"": 100, ""gamma"": 0.001}",0.9929,0.003,0.9994
+por_fruta,svm,naranja,"{""C"": 100, ""gamma"": 0.01}",0.983,0.0069,1.0
+por_fruta,rf,manzana,"{""max_depth"": 12, ""max_features"": ""sqrt"", ""min_samples_leaf"": 1, ""n_estimators"": 500}",0.9614,0.0126,0.9995
+por_fruta,rf,banano,"{""max_depth"": null, ""max_features"": 0.3, ""min_samples_leaf"": 1, ""n_estimators"": 200}",0.9881,0.0092,1.0
+por_fruta,rf,naranja,"{""max_depth"": 12, ""max_features"": ""sqrt"", ""min_samples_leaf"": 1, ""n_estimators"": 500}",0.973,0.0105,1.0
