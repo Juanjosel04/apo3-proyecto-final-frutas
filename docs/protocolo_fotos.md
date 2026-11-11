@@ -5,16 +5,16 @@ Las fotos propias son el **conjunto de prueba externo** del proyecto: miden si l
 ## Meta
 
 - **50–60 fotos en total** (el enunciado pide mínimo 30–50), unas 18–20 por integrante.
-- **Frutas:** banano, guayaba y naranja (propuesta del EDA, ver `docs/crisp-dm/02_comprension_datos.md`). [PENDIENTE: confirmar con el equipo.]
+- **Frutas:** manzana, banano y naranja (la justificación está en `docs/crisp-dm/02_comprension_datos.md`).
 - Repartir más o menos por igual las tres clases de calidad en cada fruta (unas 6 fotos por fruta y clase).
 
 ## Definición de las clases de calidad
 
 | Clase | Criterio | Ejemplos |
 |---|---|---|
-| **buena** | Sin defectos visibles, color y madurez propios para la venta | Banano amarillo sin manchas o con pocas pecas; guayaba verde-amarilla firme; naranja de color uniforme |
-| **regular** | Defecto leve que no afecta el consumo: manchas pequeñas (menos de ~10 % de la superficie visible), golpe leve, sobremaduración | Banano con muchas pecas cafés; guayaba con una mancha pequeña; naranja con una zona golpeada |
-| **mala** | Defecto extenso: podredumbre, hongo, golpe fuerte, piel rota o deformación | Banano negro o abierto; guayaba con zonas blandas cafés; naranja con moho |
+| **buena** | Sin defectos visibles, color y madurez propios para la venta | Manzana firme, de color parejo y sin golpes; banano amarillo sin manchas o con pocas pecas; naranja de color uniforme |
+| **regular** | Defecto leve que no afecta el consumo: manchas pequeñas (menos de ~10 % de la superficie visible), golpe leve, sobremaduración | Manzana con un golpe pequeño o la piel algo arrugada; banano con muchas pecas cafés; naranja con una zona golpeada |
+| **mala** | Defecto extenso: podredumbre, hongo, golpe fuerte, piel rota o deformación | Manzana con zonas blandas cafés o podrida; banano negro o abierto; naranja con moho |
 
 Si hay duda entre dos clases, se elige la peor y se anota en `notas`.
 
@@ -41,7 +41,7 @@ Si hay duda entre dos clases, se elige la peor y se anota en `notas`.
    | Columna | Valores |
    |---|---|
    | `archivo` | nombre que dio el script, p. ej. `jjl_banano_07.jpg` |
-   | `fruta` | `banano`, `guayaba`, `naranja` (u otra de `src/config.py`) |
+   | `fruta` | `manzana`, `banano`, `naranja` |
    | `calidad` | `buena`, `regular`, `mala` |
    | `diametro_cm` | número con punto decimal, p. ej. `6.5` |
    | `tamano` | `pequeno`, `mediano`, `grande` (a criterio del autor, comparando con las demás frutas de su tipo) |

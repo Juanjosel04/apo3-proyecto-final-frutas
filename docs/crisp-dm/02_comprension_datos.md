@@ -52,7 +52,22 @@ Un clasificador entrenado con la imagen completa puede aprender esos atajos (fon
 
 ## 2.4 Decisiones que salen de esta fase
 
-1. **Frutas: banano, guayaba y naranja** (propuesta, pendiente de confirmar por el equipo). Están balanceadas (1.087–1.216 imágenes por clase), son baratas y fáciles de conseguir en plazas y supermercados de Cali, y presentan defectos variados (sobremaduración, manchas, golpes, hongos). Lima queda como alternativa. Granada se descarta por el desbalance 5:1 y porque es difícil de conseguir; manzana, porque en Colombia casi toda es importada y es difícil encontrarla en mal estado para las fotos.
+1. **Frutas: manzana, banano y naranja** (confirmado por el equipo). Criterios de la elección:
+
+   | Criterio | Manzana | Banano | Naranja | Guayaba (descartada) |
+   |---|---|---|---|---|
+   | Imágenes *bad* / *good* | 1.141 / 1.149 | 1.087 / 1.113 | 1.159 / 1.216 | 1.129 / 1.152 |
+   | Nitidez mediana *good* / *bad* | 1,5× | 1,0× | 1,1× | **15×** |
+   | Imágenes de alta resolución | 0 | 0 | 0 | 0 |
+   | Señal de color de la calidad (EDA) | más píxeles oscuros en las malas | tono hacia el café y más píxeles oscuros | los píxeles oscuros no separan; depende de manchas y textura | tono hacia el café |
+   | Forma | casi redonda | alargada | redonda | redonda |
+
+   - Las tres están **balanceadas** (razón good/bad entre 1,01 y 1,05), así que no hace falta submuestrear.
+   - En las tres el **sesgo de nitidez es pequeño** (1,0× a 1,5×). En guayaba la nitidez de las *good* es 15 veces la de las *bad*: un modelo puede separar las clases por lo borrosa que está la foto, sin mirar la fruta. Esa es la razón principal para cambiarla por manzana. El sesgo de fondo (más claro en las *bad*) sí está en las tres y se ataca con la segmentación.
+   - Cubren **tres formas distintas**: dos casi redondas, donde el diámetro equivalente $d = 2\sqrt{A/\pi}$ se parece al diámetro medido con regla, y una alargada (banano), donde $d$ resume el área y no el largo. Eso permite discutir los límites del estimador de tamaño.
+   - Las tres se consiguen todo el año en supermercados y plazas de Cali. La manzana es casi toda importada, pero en las plazas se encuentran unidades golpeadas o sobremaduras para las clases regular y mala.
+   - Lima queda como alternativa. Granada se descarta por el desbalance 5:1 y porque es difícil de conseguir.
+
 2. **Clases de calidad: buena, regular y mala.** El dataset solo trae *good* y *bad*, y el enunciado pide al menos tres. Propuesta:
    - **buena** = *good*;
    - **mala** = *bad* con defecto extenso (podredumbre, hongo, golpe grande);
