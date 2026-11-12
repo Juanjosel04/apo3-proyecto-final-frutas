@@ -1,0 +1,45 @@
+{
+  "variante": "doble",
+  "parametros": 296738,
+  "epocas": 66,
+  "mejor_epoca": 54,
+  "tiempo_entrenamiento_s": 15327.7,
+  "train": {
+    "n": 4563,
+    "exactitud": 0.9671,
+    "precision_macro": 0.9672,
+    "recall_macro": 0.967,
+    "f1_macro": 0.9671,
+    "f1_buena": 0.9664,
+    "recall_buena": 0.9625,
+    "f1_mala": 0.9678,
+    "recall_mala": 0.9716,
+    "auc": 0.9941
+  },
+  "val": {
+    "n": 966,
+    "exactitud": 0.9586,
+    "precision_macro": 0.9587,
+    "recall_macro": 0.9585,
+    "f1_macro": 0.9586,
+    "f1_buena": 0.9577,
+    "recall_buena": 0.9537,
+    "f1_mala": 0.9594,
+    "recall_mala": 0.9633,
+    "auc": 0.9905
+  },
+  "test": {
+    "n": 966,
+    "exactitud": 0.9513,
+    "precision_macro": 0.9514,
+    "recall_macro": 0.9513,
+    "f1_macro": 0.9513,
+    "f1_buena": 0.9502,
+    "recall_buena": 0.9471,
+    "f1_mala": 0.9525,
+    "recall_mala": 0.9554,
+    "auc": 0.984,
+    "f1_macro_ic_inf": 0.9368,
+    "f1_macro_ic_sup": 0.9647
+  }
+}
