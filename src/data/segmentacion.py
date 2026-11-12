@@ -35,6 +35,8 @@ import numpy as np
 from skimage.feature import peak_local_max
 from skimage.segmentation import watershed
 
+from src.config import SEMILLA
+
 LADO_TRABAJO = 512  # se segmenta a esta resolución y la máscara se reescala
 LADO_GRABCUT = 256  # GrabCut es más costoso; a 256 px tarda ~0,1 s por imagen
 
@@ -115,6 +117,9 @@ def _grabcut(peq: np.ndarray, inicial: np.ndarray, iteraciones: int = 5) -> np.n
     if np.count_nonzero(gc == cv2.GC_PR_FGD) < 50:
         return inicial
     modelo_fondo, modelo_fruta = np.zeros((1, 65)), np.zeros((1, 65))
+    # GrabCut inicia sus mezclas de gaussianas con k-means aleatorio; con la semilla
+    # fija la misma imagen da siempre la misma máscara
+    cv2.setRNGSeed(SEMILLA)
     cv2.grabCut(peq, gc, None, modelo_fondo, modelo_fruta, iteraciones, cv2.GC_INIT_WITH_MASK)
     return np.where((gc == cv2.GC_FGD) | (gc == cv2.GC_PR_FGD), 255, 0).astype(np.uint8)
 
@@ -144,7 +149,9 @@ def mascara_binaria(img_bgr: np.ndarray, metodo: str = "grabcut") -> np.ndarray:
         inicial = cv2.bitwise_and(m, _otsu(sat))
         if np.count_nonzero(inicial) < 0.01 * inicial.size:
             inicial = m  # fruta poco saturada (p. ej. con moho blanco)
-        m = _grabcut(peq, inicial)
+        refinada = _grabcut(peq, inicial)
+        # Si GrabCut deja casi nada (fruta parecida al fondo), se conserva la de Otsu
+        m = refinada if np.count_nonzero(refinada) >= 0.01 * refinada.size else m
     elif metodo != "otsu":
         raise ValueError(f"Método desconocido: {metodo}")
     k = max(3, int(0.015 * max(peq.shape[:2])) | 1)

@@ -111,3 +111,12 @@ def test_grabcut_con_fondo_texturizado():
 def test_metodo_invalido():
     with pytest.raises(ValueError):
         mascara_fruta(imagen_sintetica([(300, 200)]), "kmeans")
+
+
+def test_grabcut_es_determinista():
+    rng = np.random.default_rng(3)
+    img = rng.integers(90, 160, (160, 160, 3), dtype=np.uint8)
+    cv2.circle(img, (80, 80), 45, (30, 90, 200), -1)
+    a = mascara_fruta(img, metodo="grabcut")
+    b = mascara_fruta(img, metodo="grabcut")
+    assert np.array_equal(a, b)
