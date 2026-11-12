@@ -30,6 +30,8 @@ Quedan **6.495 imágenes**. Los fallos se concentran en *good* de banano y manza
 
 **Limitación conocida.** En muchas fotos *bad* la fruta está sostenida con la mano y GrabCut incluye parte de la mano en la máscara, porque el color de la piel se parece al de la fruta. Eso deja en el recorte una pista que no es la fruta. No se corrigió porque requeriría un segmentador entrenado; se tiene en cuenta al interpretar los resultados y se controla con las fotos propias, que se toman sin manos.
 
+**Reproducibilidad de la segmentación.** GrabCut inicializa sus mezclas de gaussianas con k-means aleatorio, así que sin semilla la misma imagen puede dar máscaras algo distintas. Se detectó después de generar los recortes de esta etapa. Desde entonces `segmentacion.py` fija la semilla de OpenCV y usa la máscara de Otsu cuando GrabCut deja casi nada. El efecto medido está en la [fase 5](05_evaluacion.md#53-por-qué-estos-resultados-son-optimistas). Los recortes se regenerarán al reentrenar con tres clases.
+
 ## 3.3 Construcción de los datos: características manuales
 
 `python -m src.features.extraccion` calcula 78 características por recorte, **solo sobre los píxeles de la máscara** (fórmulas en [`docs/formulacion_matematica.md`](../formulacion_matematica.md#4-características-manuales-modelos-clásicos)):
