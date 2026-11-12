@@ -1,0 +1,6 @@
+modelo,entrenamiento,validacion,prueba,brecha_train_prueba
+Regresión logística,0.9178,0.9131,0.9005,0.0173
+SVM (RBF),0.9982,0.9824,0.9855,0.0127
+Random Forest,1.0,0.968,0.97,0.03
+CNN base,0.9393,0.9358,0.9243,0.015
+CNN doble,0.9671,0.9586,0.9513,0.0158

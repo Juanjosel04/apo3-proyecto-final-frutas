@@ -1,0 +1,9 @@
+{
+  "modelo_a": "SVM (RBF)",
+  "modelo_b": "CNN doble",
+  "solo_a_acierta": 34,
+  "solo_b_acierta": 1,
+  "ambos_fallan": 13,
+  "chi2": 29.257,
+  "p_valor": 0.0
+}

@@ -1,0 +1,4 @@
+,segmentacion_y_recorte,caracteristicas,svm,cnn
+mean,210.6,10.4,1.8,24.7
+50%,193.6,10.0,1.8,24.0
+max,627.9,16.5,2.0,42.5
