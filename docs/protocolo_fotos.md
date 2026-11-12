@@ -7,6 +7,8 @@ Las fotos propias son el **conjunto de prueba externo** del proyecto: miden si l
 - **50–60 fotos en total** (el enunciado pide mínimo 30–50), unas 18–20 por integrante.
 - **Frutas:** manzana, banano y naranja (la justificación está en `docs/crisp-dm/02_comprension_datos.md`).
 - Repartir más o menos por igual las tres clases de calidad en cada fruta (unas 6 fotos por fruta y clase).
+- **Manzana: mezclar variedades rojas y verdes en las tres clases.** En el dataset las manzanas malas son rojas con más frecuencia que las buenas, y el modelo aprendió en parte "rojo → mala"; las fotos propias deben romper esa relación para medir si el modelo detecta el daño y no la variedad.
+- Las tres clases se fotografían **con el mismo fondo, la misma luz y la misma distancia**, para que nada distinto del estado de la fruta cambie entre clases.
 
 ## Definición de las clases de calidad
 

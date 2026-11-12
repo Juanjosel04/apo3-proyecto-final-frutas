@@ -45,7 +45,7 @@ En plazas de mercado, supermercados y plantas de empaque la fruta se clasifica c
 ## Descripción del proyecto
 
 **Datos.**
-1. Dataset *Fruit Quality Classification* de Kaggle ([ryandpark/fruit-quality-classification](https://www.kaggle.com/datasets/ryandpark/fruit-quality-classification)), copia de FruitNet (Meshram y Patil, 2022): 19.526 imágenes de 6 frutas (manzana, banano, guayaba, lima, naranja y granada) en calidad *good*, *bad* y *mixed*. No se incluye en el repositorio; se descarga con `src/data/descargar_datos.py`.
+1. Dataset *Fruit Quality Classification* de Kaggle ([ryandpark/fruit-quality-classification](https://www.kaggle.com/datasets/ryandpark/fruit-quality-classification)), copia de FruitNet (Meshram y Patil, 2022): 19.526 imágenes de 6 frutas (manzana, banano, guayaba, lima, naranja y granada) en calidad *good*, *bad* y *mixed*. El proyecto trabaja con **manzana, banano y naranja** (justificación en [docs/crisp-dm/02_comprension_datos.md](docs/crisp-dm/02_comprension_datos.md)). No se incluye en el repositorio; se descarga con `src/data/descargar_datos.py`.
 2. Carpeta `mixed_quality` del mismo dataset: cada foto tiene varias frutas, que se separan y recortan una por una con `src/data/segmentacion.py`.
 3. Fotos propias del equipo (meta: 50–60), tomadas según el [protocolo de fotos](docs/protocolo_fotos.md) y etiquetadas en `data/propias/etiquetas.csv`. Se usan como conjunto de prueba externo.
 
@@ -78,11 +78,21 @@ En plazas de mercado, supermercados y plantas de empaque la fruta se clasifica c
    python -m src.data.descargar_datos
    python -m src.data.preprocesamiento
    ```
-4. Correr las pruebas:
+4. Recortar las frutas, extraer características y entrenar (en CPU tarda unos 4 min, 1 min, 1 min, 30 min, 20 min y 2 h, respectivamente):
+   ```bash
+   python -m src.data.recortes
+   python -m src.features.extraccion
+   python -m src.training.entrenar sesgo
+   python -m src.training.entrenar clasicos
+   python -m src.training.entrenar cnn --variante base
+   python -m src.training.entrenar cnn --variante doble
+   ```
+   Si el entrenamiento de la CNN se interrumpe, al volver a correr el mismo comando continúa desde la última época guardada.
+5. Correr las pruebas:
    ```bash
    pytest
    ```
-5. Abrir los notebooks de `notebooks/` en orden.
+6. Abrir los notebooks de `notebooks/` en orden.
 
 Las instrucciones detalladas están en [docs/instalacion.md](docs/instalacion.md).
 
@@ -110,9 +120,9 @@ Las instrucciones detalladas están en [docs/instalacion.md](docs/instalacion.md
 
 * [Comprensión de los datos (EDA)](notebooks/01_comprension_datos_eda.ipynb)
 * [Preparación y segmentación](notebooks/02_preparacion_segmentacion.ipynb)
-* Modelos clásicos — FASE 2
-* CNN — FASE 2
-* Evaluación comparativa — FASE 3
+* [Modelos clásicos: características, línea base, SVM y Random Forest](notebooks/03_modelos_clasicos.ipynb)
+* [CNN desde cero](notebooks/04_cnn.ipynb)
+* [Evaluación comparativa](notebooks/05_evaluacion_comparativa.ipynb)
 * [Informe final (IEEE)](informe/informe_final.docx)
 * Video — [PENDIENTE: enlace]
 
