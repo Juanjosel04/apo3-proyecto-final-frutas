@@ -8,7 +8,7 @@ Evidencia: [`notebooks/01_comprension_datos_eda.ipynb`](../../notebooks/01_compr
 |---|---|---|
 | *Fruit Quality Classification* (Kaggle, R. Park, licencia CC0) [1] | Copia de **FruitNet** [2]: fotos tomadas con celular en Maharashtra (India), con distintos fondos e iluminación | Entrenamiento, validación y prueba interna |
 | Carpeta `Mixed Qualit_Fruits` del mismo dataset | Escenas con varias frutas de calidad mezclada, sin etiqueta por fruta | Se separan las frutas y se etiquetan a mano (enriquecimiento) |
-| Fotos propias del equipo | 50–60 fotos tomadas en Cali con el [protocolo de fotos](../protocolo_fotos.md) | Prueba externa (generalización) y validación del tamaño en cm |
+| Fotos propias del equipo | Fotos de manzana, banano y naranja tomadas en Cali con el [protocolo de fotos](../protocolo_fotos.md); primera entrega de 18 (sección 2.5) | Prueba externa de la calidad (generalización) y tamaño relativo. La validación del tamaño en cm queda pendiente de fotos con escala |
 
 El dataset se descarga con `python -m src.data.descargar_datos` (unos 3,3 GB). El inventario completo, con una fila por imagen, está en `data/processed/inventario_kaggle.csv`.
 
@@ -76,6 +76,25 @@ Un clasificador entrenado con la imagen completa puede aprender esos atajos (fon
    Las definiciones están en [`docs/protocolo_fotos.md`](../protocolo_fotos.md).
 3. **Segmentación robusta a fondos con textura:** GrabCut inicializado con Otsu (ver fase 3).
 4. **Tamaño:** en el dataset solo se puede estimar el tamaño relativo. El tamaño físico se valida con las fotos propias.
+
+## 2.5 Fotos propias (primera entrega)
+
+`data/propias/` tiene 18 fotos tomadas por Juan José López (iniciales `jjl`) el 2026-11-23, dos por cada combinación de fruta y calidad:
+
+| Fruta | buena | regular | mala | Fondo |
+|---|---:|---:|---:|---|
+| Manzana | 2 | 2 | 2 | 4 en base blanca lisa, 2 en toalla de papel |
+| Banano | 2 | 2 | 2 | 4 en base blanca, 2 en toalla (las dos malas) |
+| Naranja | 2 | 2 | 2 | 4 en base blanca, 2 en toalla (las dos malas) |
+
+Revisión en [`notebooks/06_fotos_propias.ipynb`](../../notebooks/06_fotos_propias.ipynb).
+
+**Calidad de los datos y limitaciones:**
+- **Sin escala.** Las fotos llegaron recortadas o redimensionadas, con resoluciones originales de 941 a 2.576 px de lado, y sin EXIF. No comparten distancia de cámara ni escala en píxeles, y no se midió el diámetro en cm: la columna `diametro_cm` está vacía y `notas` lleva `sin_escala`. Sirven para evaluar la calidad y para asignar un tamaño **relativo** (`tamano`, calculado con `src/data/tamano.py` y los percentiles del dataset), pero **no para validar el estimador en cm**. El tamaño relativo también depende del encuadre: 14 de las 18 fotos quedan como "pequeño".
+- **Daño provocado.** Cuatro de las seis fotos `mala` tienen daño hecho a propósito: una manzana con piel arrancada, una manzana mordida y dos naranjas con la cáscara rasgada. Las otras dos son bananos sobremaduros con la cáscara rasgada o abierta. El daño provocado se ve distinto de la podredumbre o los golpes del dataset (pulpa clara expuesta en vez de zonas cafés), así que los errores en esas fotos no se pueden atribuir solo al modelo.
+- **Fondo ligado a la clase.** 5 de las 6 fotos sobre toalla de papel son de la clase `mala` (la otra es una manzana `regular`), y todas las `mala` de banano y naranja están sobre toalla. El modelo no ve el fondo porque trabaja con el recorte segmentado, pero el fondo sí afecta la luz y el balance de blancos.
+- **Variedad.** Todas las manzanas son rojas; no hay manzanas verdes para romper la relación "rojo → mala" que tiene el dataset (fase 4).
+- **Tamaño de la muestra.** Con 18 fotos, 2 por fruta y clase, cada error cambia la exactitud en 5,6 puntos. Los resultados externos son indicativos.
 
 ## Referencias
 
