@@ -4,7 +4,7 @@ Evidencia: [`notebooks/05_evaluacion_comparativa.ipynb`](../../notebooks/05_eval
 
 Esta fase tiene dos partes:
 1. **Evaluación interna** con la partición de prueba del dataset de Kaggle (966 imágenes), hecha en esta etapa.
-2. **Evaluación externa** con las fotos propias del equipo, que mide la generalización real y valida el tamaño en centímetros. [PENDIENTE: fase 3 del plan, cuando las fotos estén en el repositorio.]
+2. **Evaluación externa** con las fotos propias del equipo, que mide la generalización real. Las 18 fotos de la primera entrega ya están en `data/propias/` ([fase 2, sección 2.5](02_comprension_datos.md#25-fotos-propias-primera-entrega)) y su segmentación está revisada ([fase 3, sección 3.6](03_preparacion_datos.md#36-fotos-propias-preparación-y-segmentación-sobre-fondos-mixtos)). [PENDIENTE: evaluar los modelos sobre ellas en la fase 3 del plan.]
 
 ## 5.1 Evaluación interna (dos clases)
 
@@ -53,7 +53,7 @@ Para los clásicos, "entrenamiento" y "validación" son los promedios de la vali
 | Generalización a fotos propias (F1 macro) | ≥ 0,70 y caída documentada | — | [PENDIENTE: fotos propias] |
 | Recall de la clase `mala` | ≥ 0,85 | 0,988 (SVM) | Cumple en el dataset |
 | Mejora sobre la línea base | > 0 | +0,085 (SVM contra regresión logística) | Cumple |
-| Error relativo del diámetro | ≤ 15 % | — | [PENDIENTE: fotos propias] |
+| Error relativo del diámetro | ≤ 15 % | — | No medible con la primera entrega: las fotos no tienen escala ni diámetro en cm. Requiere fotos originales a distancia fija. |
 | Segmentación correcta | ≥ 95 % de máscaras | 94,6 % pasan el filtro automático de área | Revisión visual pendiente |
 | Tiempo por imagen | < 2 s sin GPU | 0,22 s (SVM), 0,24 s (CNN) | Cumple |
 
@@ -72,3 +72,10 @@ Por eso **no se puede decir todavía cuál modelo es mejor en la práctica**. La
 2. **Fotos propias:** incluir manzanas rojas y verdes en las tres clases, y las tres frutas sobre el mismo fondo, para que ni la variedad ni el fondo indiquen la clase ([protocolo de fotos](../protocolo_fotos.md)).
 3. **Clase `regular`:** etiquetar, cambiar a tres clases y reentrenar con el código actual ([fase 3](03_preparacion_datos.md#35-preparado-para-tres-clases)).
 4. **Opcional:** comparar con *transfer learning* (capas congeladas) en la evaluación externa.
+
+## 5.5 Limitaciones de la prueba externa (primera entrega de fotos)
+
+- **Escala.** Las fotos llegaron recortadas o redimensionadas, con resoluciones distintas y sin EXIF. No hay una escala de píxeles común ni un diámetro medido, así que el criterio del error del diámetro en cm no se puede evaluar con ellas. El tamaño de `etiquetas.csv` es relativo y depende del encuadre.
+- **Daño provocado.** Cuatro de las seis fotos `mala` tienen daño hecho a propósito (mordida, piel arrancada, cáscara rasgada). En el análisis de errores hay que separar esas fotos: un fallo en ellas puede deberse a que el modelo nunca vio pulpa expuesta en el entrenamiento, no a que no reconozca el daño natural.
+- **Muestra pequeña y variedad.** 18 fotos (2 por fruta y clase) y solo manzanas rojas: un error cambia la exactitud en 5,6 puntos y no se puede medir el sesgo "rojo → mala".
+- **Fondo y clase.** 5 de las 6 fotos sobre toalla de papel son `mala`. El recorte elimina el fondo, pero la luz y el balance de blancos de esas fotos pueden diferir.
