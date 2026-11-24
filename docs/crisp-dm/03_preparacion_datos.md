@@ -76,3 +76,25 @@ Mientras la clase "regular" no esté etiquetada se entrena con `buena` y `mala`.
 `cargar_conjunto` aplica las etiquetas del archivo encima de las del dataset; los modelos usan `class_weight="balanced"` y la CNN pesos por clase, porque "regular" quedará minoritaria; y las métricas (`src/evaluation/evaluar.py`) ya calculan F1 por clase y AUC uno contra el resto para $K = 3$ (probado en `tests/test_modelos.py`).
 
 Los recortes de `mixed_quality` (`data/interim/mixed/recortes_mixed.csv`) se podrán agregar al índice de recortes como datos de entrenamiento adicionales cuando se etiqueten sus columnas `valido` y `calidad` (falta implementarlo).
+
+## 3.6 Fotos propias: preparación y segmentación sobre fondos mixtos
+
+Evidencia: [`notebooks/06_fotos_propias.ipynb`](../../notebooks/06_fotos_propias.ipynb), figura `experiments/figures/propias_segmentacion` (PNG y PDF) y tablas `experiments/results/propias_segmentacion*.csv`.
+
+**Preparación.** Cada carpeta `<fruta>_<calidad>` pasó por `scripts/preparar_fotos.py` (lado mayor a 1024 px, JPEG sin metadatos, nombre `jjl_<fruta>_<nn>.jpg`). Las etiquetas están en `data/propias/etiquetas.csv` y pasan `scripts/validar_etiquetas.py`, que acepta `diametro_cm` vacío con un aviso. La columna `tamano` se calculó con `src/data/propias.py` (`tamano_relativo`), que segmenta la foto y aplica los umbrales por fruta del dataset.
+
+**Segmentación por fondo.** Se usó el mismo pipeline que en el dataset (Otsu sobre la distancia de color al fondo, GrabCut y respaldo de Otsu):
+
+| Fondo | Fotos | Máscaras correctas (inspección visual) | Tocan el borde | Área relativa (mediana) | Solidez (mediana) | Contraste fruta–fondo (mediana) |
+|---|---:|---:|---:|---:|---:|---:|
+| Base blanca lisa | 12 | 12 | 0 | 0,143 | 0,984 | 87 |
+| Toalla de papel con relieve | 6 | 6 | 0 | 0,121 | 0,978 | 121 |
+
+El contraste es la distancia de color media entre la fruta y el fondo estimado, en la escala de 8 bits de CIELab de OpenCV. La solidez del banano (0,64–0,83) es baja por su curvatura, no por errores.
+
+- **Base blanca:** máscaras limpias en las 12 fotos. Las sombras suaves quedan fuera de la máscara. La franja gris del canto de la mesa, que aparece en el borde de algunas fotos, no alteró el color de fondo estimado, que es la mediana de la franja del borde.
+- **Toalla de papel:** el relieve, los pliegues y las manchas de humedad tienen un color casi igual al del fondo, así que su distancia de color es baja y no entran en la máscara. Las 6 máscaras son correctas. El contraste es mayor que en la base blanca porque en este fondo están los bananos sobremaduros, que son oscuros.
+- **Defectos de pulpa clara** (mordida, piel arrancada, cáscara rasgada): quedan dentro del contorno, así que el recorte conserva el daño, aunque la pulpa expuesta se parece al fondo blanco.
+
+Las 18 fotos pasan los filtros automáticos (área entre 2 % y 98 % de la imagen). El resultado muestra que la segmentación funciona en estas condiciones controladas: una fruta por foto, fondo claro y luz difusa. No demuestra que sea robusta con fondos de color o con textura fuerte, que es justo donde falló en el dataset ([3.2](#32-limpieza-segmentación-y-recorte)).
+
