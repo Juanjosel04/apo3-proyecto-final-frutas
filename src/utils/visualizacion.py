@@ -24,18 +24,21 @@ def estilo():
     })
 
 
-def guardar_figura(fig, nombre: str, carpeta: Path = FIGURAS, raster: bool = False) -> None:
+def guardar_figura(fig, nombre: str, carpeta: Path = FIGURAS, raster: bool = False,
+                   formatos: tuple[str, ...] | None = None) -> None:
     """Guarda la figura en PNG, PDF y SVG (las dos últimas son vectoriales).
 
     Con ``raster=True`` (mosaicos de fotografías) solo se guarda PNG a 150 dpi:
     las fotos son mapas de bits y en PDF/SVG solo aumentan el peso del repo.
+    ``formatos`` cambia las extensiones; con ``raster=True, formatos=("png", "pdf")``
+    se obtiene un mosaico de fotos en PDF para el informe.
     """
     carpeta.mkdir(parents=True, exist_ok=True)
-    if raster:
-        fig.savefig(carpeta / f"{nombre}.png", bbox_inches="tight", dpi=150)
-        return
-    for ext in ("png", "pdf", "svg"):
-        fig.savefig(carpeta / f"{nombre}.{ext}", bbox_inches="tight")
+    if formatos is None:
+        formatos = ("png",) if raster else ("png", "pdf", "svg")
+    for ext in formatos:
+        fig.savefig(carpeta / f"{nombre}.{ext}", bbox_inches="tight",
+                    dpi=150 if raster else "figure")
 
 
 def leer_rgb(ruta) -> np.ndarray:
