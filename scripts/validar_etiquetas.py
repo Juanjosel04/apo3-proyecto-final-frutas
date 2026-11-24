@@ -4,13 +4,14 @@ Revisa que:
 - el CSV tenga exactamente las columnas esperadas;
 - cada fila apunte a una foto que exista y esté en la carpeta de su fruta y calidad;
 - los valores de fruta, calidad, tamaño y lugar sean válidos;
-- el diámetro sea un número positivo y la fecha tenga formato AAAA-MM-DD;
+- el diámetro, si está, sea un número positivo (vacío solo genera un aviso);
+- la fecha tenga formato AAAA-MM-DD;
 - no haya fotos sin etiqueta ni filas repetidas.
 
 Uso (desde la raíz del repo):
     python scripts/validar_etiquetas.py
 
-Devuelve código de salida 1 si encuentra errores.
+Devuelve código de salida 1 si encuentra errores. Los avisos no detienen la validación.
 """
 
 import sys
@@ -33,13 +34,28 @@ from src.config import (  # noqa: E402
 )
 
 
-def validar(ruta_csv: Path = ETIQUETAS_PROPIAS, carpeta: Path = FOTOS_PROPIAS) -> list[str]:
-    """Devuelve la lista de errores encontrados (vacía si todo está bien)."""
-    errores = []
+def _relativa(ruta: Path) -> Path:
+    try:
+        return ruta.relative_to(RAIZ)
+    except ValueError:
+        return ruta
+
+
+def validar(ruta_csv: Path = ETIQUETAS_PROPIAS,
+            carpeta: Path = FOTOS_PROPIAS) -> tuple[list[str], list[str]]:
+    """Valida el CSV de etiquetas.
+
+    Returns
+    -------
+    tuple
+        ``(errores, avisos)``. Un diámetro vacío es aviso y no error: hay fotos
+        sin medición en cm que sí sirven para evaluar la calidad.
+    """
+    errores, avisos = [], []
     df = pd.read_csv(ruta_csv, dtype=str).fillna("")
 
     if list(df.columns) != COLUMNAS_ETIQUETAS:
-        return [f"Columnas incorrectas: {list(df.columns)}. Se esperaba {COLUMNAS_ETIQUETAS}"]
+        return [f"Columnas incorrectas: {list(df.columns)}. Se esperaba {COLUMNAS_ETIQUETAS}"], []
 
     repetidos = df[df.duplicated("archivo", keep=False)]["archivo"].unique()
     errores += [f"Archivo repetido en el CSV: {a}" for a in repetidos]
@@ -56,12 +72,15 @@ def validar(ruta_csv: Path = ETIQUETAS_PROPIAS, carpeta: Path = FOTOS_PROPIAS) -
         if fila["lugar"] not in LUGARES:
             errores.append(f"Línea {linea}: lugar inválido '{fila['lugar']}'")
         if not ruta.exists():
-            errores.append(f"Línea {linea}: no existe {ruta.relative_to(RAIZ)}")
-        try:
-            if float(fila["diametro_cm"]) <= 0:
-                raise ValueError
-        except ValueError:
-            errores.append(f"Línea {linea}: diámetro inválido '{fila['diametro_cm']}'")
+            errores.append(f"Línea {linea}: no existe {_relativa(ruta)}")
+        if not fila["diametro_cm"].strip():
+            avisos.append(f"Línea {linea}: sin diámetro en cm ({fila['archivo']})")
+        else:
+            try:
+                if float(fila["diametro_cm"]) <= 0:
+                    raise ValueError
+            except ValueError:
+                errores.append(f"Línea {linea}: diámetro inválido '{fila['diametro_cm']}'")
         try:
             datetime.strptime(fila["fecha"], "%Y-%m-%d")
         except ValueError:
@@ -72,13 +91,17 @@ def validar(ruta_csv: Path = ETIQUETAS_PROPIAS, carpeta: Path = FOTOS_PROPIAS) -
     etiquetadas = set(df["archivo"])
     for foto in carpeta.rglob("*.jpg"):
         if foto.name not in etiquetadas:
-            errores.append(f"Foto sin etiqueta: {foto.relative_to(RAIZ)}")
+            errores.append(f"Foto sin etiqueta: {_relativa(foto)}")
 
-    return errores
+    return errores, avisos
 
 
 def main() -> None:
-    errores = validar()
+    errores, avisos = validar()
+    if avisos:
+        print(f"{len(avisos)} avisos:")
+        for a in avisos:
+            print(f"  - {a}")
     if errores:
         print(f"Se encontraron {len(errores)} errores:")
         for e in errores:
