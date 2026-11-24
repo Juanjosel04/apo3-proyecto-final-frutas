@@ -1,1 +1,19 @@
 archivo,fruta,calidad,diametro_cm,tamano,autor,fecha,lugar,notas
+jjl_banano_01.jpg,banano,buena,,mediano,jjl,2026-11-23,casa,sin_escala; fondo blanco; tamano relativo (umbrales del dataset)
+jjl_banano_02.jpg,banano,buena,,mediano,jjl,2026-11-23,casa,sin_escala; fondo blanco; tamano relativo (umbrales del dataset)
+jjl_banano_03.jpg,banano,regular,,mediano,jjl,2026-11-23,casa,sin_escala; fondo blanco; rayas oscuras de golpes; tamano relativo (umbrales del dataset)
+jjl_banano_04.jpg,banano,regular,,mediano,jjl,2026-11-23,casa,sin_escala; fondo blanco; manchas cafés; tamano relativo (umbrales del dataset)
+jjl_banano_05.jpg,banano,mala,,pequeno,jjl,2026-11-23,casa,"sin_escala; toalla de papel; sobremaduro, cáscara rasgada; tamano relativo (umbrales del dataset)"
+jjl_banano_06.jpg,banano,mala,,pequeno,jjl,2026-11-23,casa,"sin_escala; toalla de papel; sobremaduro, cáscara abierta; tamano relativo (umbrales del dataset)"
+jjl_manzana_01.jpg,manzana,buena,,pequeno,jjl,2026-11-23,casa,sin_escala; fondo blanco; tamano relativo (umbrales del dataset)
+jjl_manzana_02.jpg,manzana,buena,,pequeno,jjl,2026-11-23,casa,sin_escala; fondo blanco; tamano relativo (umbrales del dataset)
+jjl_manzana_03.jpg,manzana,regular,,pequeno,jjl,2026-11-23,casa,sin_escala; toalla de papel; grieta y golpes cafés; tamano relativo (umbrales del dataset)
+jjl_manzana_04.jpg,manzana,regular,,pequeno,jjl,2026-11-23,casa,sin_escala; fondo blanco; golpe café y zonas magulladas; tamano relativo (umbrales del dataset)
+jjl_manzana_05.jpg,manzana,mala,,pequeno,jjl,2026-11-23,casa,sin_escala; fondo blanco; daño provocado (piel arrancada); tamano relativo (umbrales del dataset)
+jjl_manzana_06.jpg,manzana,mala,,pequeno,jjl,2026-11-23,casa,sin_escala; toalla de papel; daño provocado (mordida); tamano relativo (umbrales del dataset)
+jjl_naranja_01.jpg,naranja,buena,,pequeno,jjl,2026-11-23,casa,sin_escala; fondo blanco; tamano relativo (umbrales del dataset)
+jjl_naranja_02.jpg,naranja,buena,,pequeno,jjl,2026-11-23,casa,sin_escala; fondo blanco; tamano relativo (umbrales del dataset)
+jjl_naranja_03.jpg,naranja,regular,,pequeno,jjl,2026-11-23,casa,sin_escala; fondo blanco; cáscara abultada y manchas; tamano relativo (umbrales del dataset)
+jjl_naranja_04.jpg,naranja,regular,,pequeno,jjl,2026-11-23,casa,sin_escala; fondo blanco; cáscara abultada y manchas; tamano relativo (umbrales del dataset)
+jjl_naranja_05.jpg,naranja,mala,,pequeno,jjl,2026-11-23,casa,sin_escala; toalla de papel; daño provocado (cáscara rasgada); tamano relativo (umbrales del dataset)
+jjl_naranja_06.jpg,naranja,mala,,pequeno,jjl,2026-11-23,casa,sin_escala; toalla de papel; daño provocado (cáscara rasgada); tamano relativo (umbrales del dataset)
