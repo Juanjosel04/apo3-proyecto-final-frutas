@@ -27,7 +27,7 @@ from src.config import (  # noqa: E402
     COLUMNAS_ETIQUETAS,
     ETIQUETAS_PROPIAS,
     FOTOS_PROPIAS,
-    FRUTAS,
+    FRUTAS_PROYECTO,
     LUGARES,
     TAMANOS,
 )
@@ -47,7 +47,7 @@ def validar(ruta_csv: Path = ETIQUETAS_PROPIAS, carpeta: Path = FOTOS_PROPIAS) -
     for i, fila in df.iterrows():
         linea = i + 2  # +1 por encabezado, +1 porque las filas empiezan en 1
         ruta = carpeta / fila["fruta"] / fila["calidad"] / fila["archivo"]
-        if fila["fruta"] not in FRUTAS:
+        if fila["fruta"] not in FRUTAS_PROYECTO:
             errores.append(f"Línea {linea}: fruta inválida '{fila['fruta']}'")
         if fila["calidad"] not in CALIDADES:
             errores.append(f"Línea {linea}: calidad inválida '{fila['calidad']}'")

@@ -25,7 +25,7 @@ from PIL import Image, ImageOps
 RAIZ = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RAIZ))
 
-from src.config import CALIDADES, EXTENSIONES, FOTOS_PROPIAS, FRUTAS  # noqa: E402
+from src.config import CALIDADES, EXTENSIONES, FOTOS_PROPIAS, FRUTAS_PROYECTO  # noqa: E402
 
 LADO_MAX = 1024
 CALIDAD_JPEG = 90
@@ -55,7 +55,7 @@ def preparar_imagen(ruta: Path, destino: Path) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--origen", required=True, type=Path, help="Carpeta con las fotos originales")
-    parser.add_argument("--fruta", required=True, choices=FRUTAS)
+    parser.add_argument("--fruta", required=True, choices=FRUTAS_PROYECTO)
     parser.add_argument("--calidad", required=True, choices=CALIDADES)
     parser.add_argument("--iniciales", required=True, help="Iniciales del autor en minúscula, p. ej. jjl")
     args = parser.parse_args()
