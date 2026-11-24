@@ -1,6 +1,6 @@
 # Protocolo de recolección y etiquetado de fotos propias
 
-Las fotos propias son el **conjunto de prueba externo** del proyecto: miden si los modelos entrenados con el dataset de Kaggle funcionan con fotos tomadas en Cali con un celular. También sirven para validar el estimador de tamaño contra el diámetro real.
+Las fotos propias son el **conjunto de prueba externo** del proyecto: miden si los modelos entrenados con el dataset de Kaggle funcionan con fotos tomadas en Cali con un celular. Si se toman a distancia fija y con el diámetro medido, también sirven para validar el estimador de tamaño contra el diámetro real.
 
 ## Meta
 
@@ -19,6 +19,18 @@ Las fotos propias son el **conjunto de prueba externo** del proyecto: miden si l
 | **mala** | Defecto extenso: podredumbre, hongo, golpe fuerte, piel rota o deformación | Manzana con zonas blandas cafés o podrida; banano negro o abierto; naranja con moho |
 
 Si hay duda entre dos clases, se elige la peor y se anota en `notas`.
+
+## Estado de la recolección
+
+| Autor | Fotos | Escala para tamaño en cm | Notas |
+|---|---:|---|---|
+| `jjl` | 18 (2 por fruta y clase) | No | Recortadas o redimensionadas y sin EXIF (`sin_escala` en `notas`); tamaño relativo; 4 fotos `mala` con daño provocado; solo manzanas rojas |
+| [PENDIENTE: compañero A] | — | — | — |
+| [PENDIENTE: compañero B] | — | — | — |
+
+Para que las próximas fotos sirvan también para el tamaño en cm, deben ser **los archivos originales de la cámara**, sin recortar ni pasar por WhatsApp, tomados a la distancia fija de este protocolo y con el diámetro medido. Hacen falta manzanas verdes y, en la clase `mala`, defectos naturales (podredumbre, golpes, moho) en lugar de daño provocado.
+
+En `notas` se usan estas marcas, separadas por `;`: `sin_escala` (la foto no sirve para el tamaño en cm), el fondo (`fondo blanco` o `toalla de papel`), `daño provocado (...)` si el defecto se hizo a propósito y una descripción corta del defecto.
 
 ## Cómo tomar cada foto
 
@@ -45,7 +57,7 @@ Si hay duda entre dos clases, se elige la peor y se anota en `notas`.
    | `archivo` | nombre que dio el script, p. ej. `jjl_banano_07.jpg` |
    | `fruta` | `manzana`, `banano`, `naranja` |
    | `calidad` | `buena`, `regular`, `mala` |
-   | `diametro_cm` | número con punto decimal, p. ej. `6.5` |
+   | `diametro_cm` | número con punto decimal, p. ej. `6.5`. Se deja vacío si no se midió; el validador lo acepta con un aviso |
    | `tamano` | `pequeno`, `mediano`, `grande` (a criterio del autor, comparando con las demás frutas de su tipo) |
    | `autor` | iniciales, p. ej. `jjl` |
    | `fecha` | `AAAA-MM-DD` |
