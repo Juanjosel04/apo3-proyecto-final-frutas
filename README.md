@@ -47,7 +47,7 @@ En plazas de mercado, supermercados y plantas de empaque la fruta se clasifica c
 **Datos.**
 1. Dataset *Fruit Quality Classification* de Kaggle ([ryandpark/fruit-quality-classification](https://www.kaggle.com/datasets/ryandpark/fruit-quality-classification)), copia de FruitNet (Meshram y Patil, 2022): 19.526 imágenes de 6 frutas (manzana, banano, guayaba, lima, naranja y granada) en calidad *good*, *bad* y *mixed*. El proyecto trabaja con **manzana, banano y naranja** (justificación en [docs/crisp-dm/02_comprension_datos.md](docs/crisp-dm/02_comprension_datos.md)). No se incluye en el repositorio; se descarga con `src/data/descargar_datos.py`.
 2. Carpeta `mixed_quality` del mismo dataset: cada foto tiene varias frutas, que se separan y recortan una por una con `src/data/segmentacion.py`.
-3. Fotos propias del equipo (meta: 50–60), tomadas según el [protocolo de fotos](docs/protocolo_fotos.md) y etiquetadas en `data/propias/etiquetas.csv`. Se usan como conjunto de prueba externo.
+3. Fotos propias del equipo, tomadas según el [protocolo de fotos](docs/protocolo_fotos.md) y etiquetadas en `data/propias/etiquetas.csv`. Se usan como conjunto de prueba externo. Hay 18 fotos (2 por fruta y calidad). No tienen escala común ni diámetro medido, así que sirven para evaluar la calidad y el tamaño relativo, pero no el tamaño en cm (ver [docs/crisp-dm/02_comprension_datos.md](docs/crisp-dm/02_comprension_datos.md#25-fotos-propias-primera-entrega)). [PENDIENTE: fotos de los compañeros]
 
 **Preguntas que guían el trabajo.**
 * ¿Qué tan bien se distingue la calidad de una fruta con características de color, textura y forma frente a una CNN entrenada desde cero?
@@ -123,6 +123,7 @@ Las instrucciones detalladas están en [docs/instalacion.md](docs/instalacion.md
 * [Modelos clásicos: características, línea base, SVM y Random Forest](notebooks/03_modelos_clasicos.ipynb)
 * [CNN desde cero](notebooks/04_cnn.ipynb)
 * [Evaluación comparativa](notebooks/05_evaluacion_comparativa.ipynb)
+* [Fotos propias: etiquetas, segmentación por fondo y tamaño relativo](notebooks/06_fotos_propias.ipynb)
 * [Informe final (IEEE)](informe/informe_final.docx)
 * Video — [PENDIENTE: enlace]
 
