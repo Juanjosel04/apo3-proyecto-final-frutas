@@ -60,3 +60,16 @@ def test_estimar_tamano_con_umbrales():
     r = estimar_tamano(circulo(150), umbrales=(0.2, 0.5))
     assert r["categoria"] == "grande"
     assert set(r) == {"area_px", "diametro_px", "diametro_norm", "categoria"}
+
+
+def test_tamano_relativo_usa_umbrales_de_la_fruta():
+    from src.data.propias import tamano_relativo
+
+    img = np.full((400, 400, 3), 235, np.uint8)
+    cv2.circle(img, (200, 200), 80, (40, 60, 200), -1)
+    # d_norm = 160 / 400 = 0.40
+    umbrales = {"manzana": (0.30, 0.35), "naranja": (0.45, 0.55)}
+    assert tamano_relativo(img, "manzana", umbrales)["categoria"] == "grande"
+    r = tamano_relativo(img, "naranja", umbrales)
+    assert r["categoria"] == "pequeno"
+    assert abs(r["diametro_norm"] - 0.40) < 0.02
