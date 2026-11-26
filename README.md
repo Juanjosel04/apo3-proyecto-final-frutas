@@ -88,11 +88,15 @@ En plazas de mercado, supermercados y plantas de empaque la fruta se clasifica c
    python -m src.training.entrenar cnn --variante doble
    ```
    Si el entrenamiento de la CNN se interrumpe, al volver a correr el mismo comando continúa desde la última época guardada.
-5. Correr las pruebas:
+5. Abrir la app (carga de imagen o cámara):
+   ```bash
+   streamlit run app/app_streamlit.py
+   ```
+6. Correr las pruebas:
    ```bash
    pytest
    ```
-6. Abrir los notebooks de `notebooks/` en orden.
+7. Abrir los notebooks de `notebooks/` en orden.
 
 Las instrucciones detalladas están en [docs/instalacion.md](docs/instalacion.md).
 
@@ -124,6 +128,8 @@ Las instrucciones detalladas están en [docs/instalacion.md](docs/instalacion.md
 * [CNN desde cero](notebooks/04_cnn.ipynb)
 * [Evaluación comparativa](notebooks/05_evaluacion_comparativa.ipynb)
 * [Fotos propias: etiquetas, segmentación por fondo y tamaño relativo](notebooks/06_fotos_propias.ipynb)
+* [Evaluación externa con fotos propias](notebooks/07_evaluacion_externa.ipynb)
+* [App Streamlit](app/app_streamlit.py)
 * [Informe final (IEEE)](informe/informe_final.docx)
 * Video — [PENDIENTE: enlace]
 
