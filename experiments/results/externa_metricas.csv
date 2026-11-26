@@ -1,0 +1,3 @@
+modelo,f1_interna,f1_externa,caida,exactitud,recall_buena,recall_mala,auc,exactitud_sin_dano_provocado,n_sin_dano_provocado
+SVM (RBF),0.986,0.25,0.736,0.333,0.667,0.0,0.306,0.5,8
+CNN doble,0.951,0.438,0.514,0.5,0.833,0.167,0.278,0.625,8
