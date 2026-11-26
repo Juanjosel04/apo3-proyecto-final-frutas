@@ -4,7 +4,7 @@ Evidencia: [`notebooks/05_evaluacion_comparativa.ipynb`](../../notebooks/05_eval
 
 Esta fase tiene dos partes:
 1. **Evaluación interna** con la partición de prueba del dataset de Kaggle (966 imágenes), hecha en esta etapa.
-2. **Evaluación externa** con las fotos propias del equipo, que mide la generalización real. Las 18 fotos de la primera entrega ya están en `data/propias/` ([fase 2, sección 2.5](02_comprension_datos.md#25-fotos-propias-primera-entrega)) y su segmentación está revisada ([fase 3, sección 3.6](03_preparacion_datos.md#36-fotos-propias-preparación-y-segmentación-sobre-fondos-mixtos)). [PENDIENTE: evaluar los modelos sobre ellas en la fase 3 del plan.]
+2. **Evaluación externa** con las 18 fotos propias del equipo, que mide la generalización real (sección 5.6, [`notebooks/07_evaluacion_externa.ipynb`](../../notebooks/07_evaluacion_externa.ipynb)).
 
 ## 5.1 Evaluación interna (dos clases)
 
@@ -50,7 +50,7 @@ Para los clásicos, "entrenamiento" y "validación" son los promedios de la vali
 | Criterio ([fase 1](01_comprension_negocio.md#15-criterios-de-éxito)) | Meta | Resultado | Estado |
 |---|---|---|---|
 | Calidad en el test del dataset (F1 macro) | ≥ 0,85 | 0,986 (SVM), 0,951 (CNN doble) | Cumple con dos clases. Falta medirlo con tres. |
-| Generalización a fotos propias (F1 macro) | ≥ 0,70 y caída documentada | — | [PENDIENTE: fotos propias] |
+| Generalización a fotos propias (F1 macro) | ≥ 0,70 y caída documentada | 0,25 (SVM), 0,44 (CNN doble) | **No cumple**; caída documentada en 5.6 |
 | Recall de la clase `mala` | ≥ 0,85 | 0,988 (SVM) | Cumple en el dataset |
 | Mejora sobre la línea base | > 0 | +0,085 (SVM contra regresión logística) | Cumple |
 | Error relativo del diámetro | ≤ 15 % | — | No medible con la primera entrega: las fotos no tienen escala ni diámetro en cm. Requiere fotos originales a distancia fija. |
@@ -79,3 +79,22 @@ Por eso **no se puede decir todavía cuál modelo es mejor en la práctica**. La
 - **Daño provocado.** Cuatro de las seis fotos `mala` tienen daño hecho a propósito (mordida, piel arrancada, cáscara rasgada). En el análisis de errores hay que separar esas fotos: un fallo en ellas puede deberse a que el modelo nunca vio pulpa expuesta en el entrenamiento, no a que no reconozca el daño natural.
 - **Muestra pequeña y variedad.** 18 fotos (2 por fruta y clase) y solo manzanas rojas: un error cambia la exactitud en 5,6 puntos y no se puede medir el sesgo "rojo → mala".
 - **Fondo y clase.** 5 de las 6 fotos sobre toalla de papel son `mala`. El recorte elimina el fondo, pero la luz y el balance de blancos de esas fotos pueden diferir.
+
+## 5.6 Evaluación externa con fotos propias
+
+Evidencia: [`notebooks/07_evaluacion_externa.ipynb`](../../notebooks/07_evaluacion_externa.ipynb), `experiments/results/externa_*.csv` y figuras `externa_*`. Se usó el mismo módulo de inferencia que la app (`src/inference/predecir.py`), con la fruta indicada.
+
+| Modelo | F1 interna | F1 externa (12 fotos buena/mala) | Caída | Recall `mala` | AUC | Exactitud sin daño provocado (8 fotos) |
+|---|---:|---:|---:|---:|---:|---:|
+| SVM (RBF) | 0,986 | 0,250 | 0,736 | 0,00 | 0,31 | 0,50 |
+| CNN doble | 0,951 | 0,438 | 0,514 | 0,17 | 0,28 | 0,63 |
+
+- **La generalización falla.** Ambos modelos predicen `buena` en casi todas las fotos de banano y manzana, sin importar la calidad, y la SVM predice `mala` en las naranjas buenas y regulares. La probabilidad de `mala` no ordena las clases (figura `externa_prob_mala`), así que cambiar el umbral no lo arregla.
+- **Causa principal: tipo de defecto.** En el espacio de color (figura `externa_dominio_color`), las fotos propias de cada fruta caen en el mismo punto sin importar su calidad. Sus defectos son locales (mordida, piel arrancada, manchas pequeñas), mientras que las *bad* del dataset tienen daño global (podredumbre, fruta ennegrecida). Los modelos aprendieron el color medio de la fruta, que no cambia con un defecto local.
+- **Daño provocado.** La pulpa fresca expuesta no aparece en el entrenamiento. Sin esas 4 fotos la exactitud sube a 0,50 y 0,63, todavía cerca del azar.
+- **Condiciones de captura.** Otra cámara, luz y nitidez. Coincide con el atajo medido en la fase 4: parte de lo que los modelos aprendieron son condiciones de captura, no defectos.
+- **La CNN generaliza algo mejor que la SVM** (0,44 contra 0,25), al revés que en la prueba interna.
+- **Reconocimiento de la fruta:** 12 de 18 (4 de 6 bananos confundidos con manzana). Por eso la app permite indicar la fruta.
+
+**Conclusión.** El desempeño interno (0,986) no se traslada a fotos reales: el criterio de generalización no se cumple. Es una limitación del dataset (sesgo de captura y tipo de defecto) más que de un modelo en particular. Mejoras con sustento técnico: entrenar con fotos tomadas en las condiciones de uso; características locales de defecto (número, tamaño y proporción de manchas); aumentación de color y brillo o *transfer learning* en la CNN; y etiquetas de daño natural.
+
