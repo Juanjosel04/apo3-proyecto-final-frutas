@@ -30,6 +30,10 @@ data/propias/originales/
 # Modelos entrenados (solo se versiona el final si pesa < 50 MB)
 experiments/checkpoints/*
 !experiments/checkpoints/.gitkeep
+# modelos finales que usa la app
+!experiments/checkpoints/clasico_global_fruta_svm.joblib
+!experiments/checkpoints/clasificador_fruta_rf.joblib
+!experiments/checkpoints/cnn_calidad_doble.keras
 experiments/logs/
 
 # Word abierto
